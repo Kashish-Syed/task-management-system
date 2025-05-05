@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_POST['title']) && isset($_POST['description']) &&  isset($_POST['assigned_to']) && $_SESSION['role'] == 'admin') {
+if (isset($_POST['id']) && isset($_POST['title']) && isset($_POST['description']) &&  isset($_POST['assigned_to']) && $_SESSION['role'] == 'admin') {
   include "../src/DB_connection.php";
   function validate_input($data)
   {
@@ -13,31 +13,32 @@ if (isset($_POST['title']) && isset($_POST['description']) &&  isset($_POST['ass
   $title = validate_input($_POST['title']);
   $description = validate_input($_POST['description']);
   $assigned_to = validate_input($_POST['assigned_to']);
+  $id = validate_input($_POST['id']);
 
   if (empty($title)) {
     $em = "Title is required";
-    header("Location: ../src/create_task.php?error=$em");
+    header("Location: ../src/edit-task.php?error=$em&id=$id");
     exit();
   } else if (empty($description)) {
     $em = "Description is required";
-    header("Location: ../src/create_task.php?error=$em");
+    header("Location: ../src/edit-task.php?error=$em&id=$id");
     exit();
   } else if ($assigned_to == 0) {
     $em = "You must assign the task to someone";
-    header("Location: ../src/create_task.php?error=$em");
+    header("Location: ../src/edit-task.php?error=$em&id=$id");
     exit();
   } else {
     // Insert new task
     include "Model/Task.php";
-    $data = array($title, $description, $assigned_to);
-    insert_task($conn, $data);
+    $data = array($title, $description, $assigned_to, $id);
+    update_task($conn, $data);
 
-    $em = "Task Created Successfully!";
-    header("Location: ../src/create_task.php?success=$em");
+    $em = "Task Updated Successfully!";
+    header("Location: ../src/edit-task.php?success=$em&id=$id");
     exit();
   }
 } else {
   $em = "First Login";
-  header("Location: ../src/create_task.php?error=$em");
+  header("Location: ../src/login.php?error=$em");
   exit();
 }

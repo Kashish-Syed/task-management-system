@@ -1,6 +1,7 @@
 <?php
 
-function insert_task($conn, $data) {
+function insert_task($conn, $data)
+{
   $sql = "INSERT INTO tasks (title, description, assigned_to) VALUES (?, ?, ?)";
   $stmt = $conn->prepare($sql);
 
@@ -15,14 +16,18 @@ function get_all_tasks($conn)
 {
   $sql = "SELECT * FROM tasks ORDER BY id DESC";
   $stmt = $conn->prepare($sql);
-  $stmt->execute([]);
+  $stmt->execute();
 
-  if ($stmt->rowCount() > 0) {
-    $tasks = $stmt->fetchAll();
-  } else $tasks = 0;
+  $result = $stmt->get_result();
 
+  if ($result && $result->num_rows > 0) {
+    $tasks = $result->fetch_all(MYSQLI_ASSOC);
+  } else {
+    $tasks = 0;
+  }
   return $tasks;
 }
+
 function get_all_tasks_due_today($conn)
 {
   $sql = "SELECT * FROM tasks WHERE due_date = CURDATE() AND status != 'completed' ORDER BY id DESC";
@@ -87,8 +92,6 @@ function count_tasks_NoDeadline($conn)
   return $stmt->rowCount();
 }
 
-
-
 function delete_task($conn, $data)
 {
   $sql = "DELETE FROM tasks WHERE id=? ";
@@ -96,19 +99,24 @@ function delete_task($conn, $data)
   $stmt->execute($data);
 }
 
-
 function get_task_by_id($conn, $id)
 {
-  $sql = "SELECT * FROM tasks WHERE id =? ";
+  $sql = "SELECT * FROM tasks WHERE id = ?";
   $stmt = $conn->prepare($sql);
-  $stmt->execute([$id]);
+  $stmt->bind_param("i", $id);
+  $stmt->execute();
 
-  if ($stmt->rowCount() > 0) {
-    $task = $stmt->fetch();
-  } else $task = 0;
+  $result = $stmt->get_result();
+
+  if ($result && $result->num_rows > 0) {
+    $task = $result->fetch_assoc();
+  } else {
+    $task = 0;
+  }
 
   return $task;
 }
+
 function count_tasks($conn)
 {
   $sql = "SELECT id FROM tasks";
@@ -120,7 +128,7 @@ function count_tasks($conn)
 
 function update_task($conn, $data)
 {
-  $sql = "UPDATE tasks SET title=?, description=?, assigned_to=?, due_date=? WHERE id=?";
+  $sql = "UPDATE tasks SET title=?, description=?, assigned_to=? WHERE id=?";
   $stmt = $conn->prepare($sql);
   $stmt->execute($data);
 }

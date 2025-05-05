@@ -37,9 +37,10 @@ if (isset($_SESSION['role']) && isset($_SESSION['id'])) {
               <th>Role</th>
               <th>Action</th>
             </tr>
-            <?php foreach ($users as $user) { ?>
+            <?php $i = 0;
+            foreach ($users as $user) { ?>
               <tr>
-                <td><?= $user['id'] ?></td>
+                <td><?= ++$i ?></td>
                 <td><?= $user['full_name'] ?></td>
                 <td><?= $user['username'] ?></td>
                 <td><?= $user['role'] ?></td>
