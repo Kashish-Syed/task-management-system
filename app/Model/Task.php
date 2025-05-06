@@ -61,6 +61,7 @@ function get_all_tasks_overdue($conn)
 
   return $tasks;
 }
+
 function count_tasks_overdue($conn)
 {
   $sql = "SELECT id FROM tasks WHERE due_date < CURDATE() AND status != 'completed'";
@@ -69,7 +70,6 @@ function count_tasks_overdue($conn)
 
   return $stmt->rowCount();
 }
-
 
 function get_all_tasks_NoDeadline($conn)
 {
@@ -145,14 +145,20 @@ function get_all_tasks_by_id($conn, $id)
 {
   $sql = "SELECT * FROM tasks WHERE assigned_to=?";
   $stmt = $conn->prepare($sql);
-  $stmt->execute([$id]);
+  $stmt->bind_param("i", $id);
+  $stmt->execute();
 
-  if ($stmt->rowCount() > 0) {
-    $tasks = $stmt->fetchAll();
-  } else $tasks = 0;
+  $result = $stmt->get_result();
+
+  if ($result && $result->num_rows > 0) {
+    $tasks = $result->fetch_all(MYSQLI_ASSOC);
+  } else {
+    $tasks = 0;
+  }
 
   return $tasks;
 }
+
 
 
 

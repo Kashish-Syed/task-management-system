@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['role']) && isset($_SESSION['id']) && $_SESSION['role'] == "admin") {
+if (isset($_SESSION['role']) && isset($_SESSION['id']) && $_SESSION['role'] == 'employee') {
   include "DB_connection.php";
   include "../app/Model/Task.php";
   include "../app/Model/User.php";
@@ -35,8 +35,8 @@ if (isset($_SESSION['role']) && isset($_SESSION['id']) && $_SESSION['role'] == "
     <div class="body">
       <?php include "../inc/nav.php" ?>
       <section class="section-1">
-        <h4 class="title">Edit Tasks <a href="tasks.php">Tasks</a></h4>
-        <form action="../app/update-task.php" method="POST" class="form-1">
+        <h4 class="title">Edit Tasks <a href="my_task.php">Tasks</a></h4>
+        <form action="../app/update-task-employee.php" method="POST" class="form-1">
 
           <?php if (isset($_GET['error'])) { ?>
             <div class="alert alert-danger" role="alert">
@@ -50,29 +50,19 @@ if (isset($_SESSION['role']) && isset($_SESSION['id']) && $_SESSION['role'] == "
           <?php } ?>
 
           <div class="input-holder">
-            <label for="">Title</label>
-            <input type="text" name="title" value="<?= $task['title'] ?>" class="input-1" placeholder="Title"><br>
+            <p><b>Title: </b><?= $task['title'] ?></p>
           </div>
           <div class="input-holder">
-            <label for="">Description</label>
-            <textarea name="description" rows="4" class="input-1" placeholder="Description"><?= $task['description'] ?></textarea><br>
+            <p><b>Description: </b><?= $task['description'] ?></p>
           </div>
           <div class="input-holder">
-            <label for="">Assigned to</label>
-            <select name="assigned_to" class="input-1">
-              <option value="0">select employee</option>
-              <?php if ($users != 0) {
-                foreach ($users as $user) {
-                  if ($task['assigned_to'] == $user['id']) { ?>
-                    <option selected value="<?= $user['id'] ?>"><?= $user['full_name'] ?></option>
-                  <?php } else { ?>
-                    <option value="<?= $user['id'] ?>"><?= $user['full_name'] ?></option>
-              <?php }
-                }
-              } ?>
+            <lable>Status</lable>
+            <select name="status" class="input-1">
+              <option <?php if ($task['status'] == "pending") echo "selected"; ?>>pending</option>
+              <option <?php if ($task['status'] == "in_progress") echo "selected"; ?>>in_progress</option>
+              <option <?php if ($task['status'] == "completed") echo "selected"; ?>>completed</option>
             </select><br>
           </div>
-
           <input type="text" name="id" value="<?= $task['id'] ?>" hidden>
           <button class="edit-btn">Update</button>
         </form>
@@ -80,7 +70,7 @@ if (isset($_SESSION['role']) && isset($_SESSION['id']) && $_SESSION['role'] == "
     </div>
 
     <script type="text/javascript">
-      var active = document.querySelector("#navList li:nth-child(4)");
+      var active = document.querySelector("#navList li:nth-child(2)");
       active.classList.add("active");
     </script>
   </body>
