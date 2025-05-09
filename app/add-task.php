@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_POST['title']) && isset($_POST['description']) &&  isset($_POST['assigned_to']) && $_SESSION['role'] == 'admin') {
+if (isset($_POST['title']) && isset($_POST['description']) &&  isset($_POST['assigned_to']) && isset($_POST['due_date']) && $_SESSION['role'] == 'admin') {
   include "../src/DB_connection.php";
   function validate_input($data)
   {
@@ -13,6 +13,7 @@ if (isset($_POST['title']) && isset($_POST['description']) &&  isset($_POST['ass
   $title = validate_input($_POST['title']);
   $description = validate_input($_POST['description']);
   $assigned_to = validate_input($_POST['assigned_to']);
+  $due_date = validate_input($_POST['due_date']);
 
   if (empty($title)) {
     $em = "Title is required";
@@ -29,7 +30,7 @@ if (isset($_POST['title']) && isset($_POST['description']) &&  isset($_POST['ass
   } else {
     // Insert new task
     include "Model/Task.php";
-    $data = array($title, $description, $assigned_to);
+    $data = array($title, $description, $assigned_to, $due_date);
     insert_task($conn, $data);
 
     $em = "Task Created Successfully!";

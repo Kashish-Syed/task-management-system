@@ -52,7 +52,7 @@ if (isset($_SESSION['role']) && isset($_SESSION['id'])) {
 
   } else {
     $em = "First Login";
-    header("Location: ../src/edit-user.php?error=$em");
+    header("Location: ../src/login.php?error=$em");
     exit();
   } }
 

@@ -64,3 +64,23 @@ print_r($data);
   return $stmt->affected_rows > 0;
 }
 
+function update_profile($conn, $data) {
+  $sql = "UPDATE users SET full_name=?, password=? WHERE id=?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("ssi", $data[0], $data[1], $data[2]);
+  $stmt->execute();
+
+  return $stmt->affected_rows > 0;
+}
+
+function count_users($conn)
+{
+  $sql = "SELECT id FROM users WHERE role = 'employee'";
+  $result = $conn->query($sql);
+
+  if ($result) {
+    return $result->num_rows;
+  } else {
+    return 0;
+  }
+}

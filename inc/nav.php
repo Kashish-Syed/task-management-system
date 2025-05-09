@@ -9,7 +9,7 @@
   ?>
     <ul id="navList">
       <li>
-        <a href="#">
+        <a href="index.php">
           <i class="fa fa-tachometer" aria-hidden="true"></i>
           <span>Dashboard</span>
         </a>
@@ -27,12 +27,6 @@
         </a>
       </li>
       <li>
-        <a href="notifications.php">
-          <i class="fa fa-bell" aria-hidden="true"></i>
-          <span>Notifications</span>
-        </a>
-      </li>
-      <li>
         <a href="logout.php">
           <i class="fa fa-sign-out" aria-hidden="true"></i>
           <span>Logout</span>
@@ -44,7 +38,7 @@
     <!-- Admin Navigation Bar -->
     <ul id="navList">
       <li>
-        <a href="#">
+        <a href="index.php">
           <i class="fa fa-tachometer" aria-hidden="true"></i>
           <span>Dashboard</span>
         </a>
@@ -65,12 +59,6 @@
         <a href="tasks.php">
           <i class="fa fa-tasks" aria-hidden="true"></i>
           <span>All Tasks</span>
-        </a>
-      </li>
-      <li>
-        <a href="notifications.php">
-          <i class="fa fa-bell" aria-hidden="true"></i>
-          <span>Notifications</span>
         </a>
       </li>
       <li>
